@@ -3,8 +3,14 @@ package com.example.weatherapp
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.example.weatherapp.api.ApiFactory
 import com.example.weatherapp.database.AppDatabase
+import com.example.weatherapp.pojo.Condition
+import com.example.weatherapp.pojo.Current
+import com.example.weatherapp.pojo.Hour
+import com.example.weatherapp.pojo.Location
+import com.example.weatherapp.pojo.WeatherInfo
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
@@ -21,10 +27,22 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         loadData()
     }
 
-    val location = db.weatherInfoDao().getInfoAboutCity(city)
-    val currentWeather = db.weatherInfoDao().getCurrentWeather()
-    val infoAboutIcon = db.weatherInfoDao().getInfoAboutIcon()
-    val tempPerHour = db.weatherInfoDao().getTempFromHour()
+    fun location(): LiveData<Location> {
+        return db.weatherInfoDao().getInfoAboutCity(city)
+    }
+
+    fun infoAboutIcon(): LiveData<Condition> {
+        return db.weatherInfoDao().getInfoAboutIcon()
+    }
+
+    fun currentWeather(): LiveData<Current> {
+        return db.weatherInfoDao().getCurrentWeather()
+    }
+
+    fun tempPerHour(): LiveData<List<Hour>> {
+        return db.weatherInfoDao().getTempFromHour()
+    }
+
     val forecastWeatherPerHour = db.weatherInfoDao().getForecastWeatherPerHour(date)
 
 
@@ -35,8 +53,8 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             .retry()
             .subscribeOn(Schedulers.io())
             .subscribe({
-                it?.let { it.current?.let { it.condition?.let { it -> db.weatherInfoDao().insertCondition(it) } } }
                 it?.let { it.current?.let { it -> db.weatherInfoDao().insertCurrentWeather(it) } }
+                it?.let { it.current?.let { it.condition?.let { it -> db.weatherInfoDao().insertCondition(it) } } }
                 it?.let { it.location?.let { it -> db.weatherInfoDao().insertLocation(it) } }
                 it?.let { it.forecast?.let { it.forecastday?.let { it.let { it -> db.weatherInfoDao().insertForecastdayWeather(it) } } } }
                 it?.let { it.forecast?.let { it.forecastday?.let { it.map { it.hour?.let { it -> db.weatherInfoDao().insertHourWeather(it) } } } } }

@@ -1,5 +1,7 @@
 package com.example.weatherapp.adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.pojo.Hour
 import com.example.weatherapp.pojo.WeatherInfo
+import com.squareup.picasso.Picasso
 
-class WeatherInfoAdapter: RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoViewHolder>() {
+class WeatherInfoAdapter(private val context: Context): RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoViewHolder>() {
 
-    var weatherInfoList = arrayListOf<WeatherInfo>()
+    var weatherInfoListOfDays: List<WeatherInfo> = arrayListOf()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -22,7 +26,7 @@ class WeatherInfoAdapter: RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoVie
         parent: ViewGroup,
         viewType: Int,
     ): WeatherInfoViewHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.activity_main, parent, false)
+        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_weather_info, parent, false)
         return WeatherInfoViewHolder(view)
     }
 
@@ -30,24 +34,13 @@ class WeatherInfoAdapter: RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoVie
         holder: WeatherInfoViewHolder,
         position: Int,
     ) {
-        val weatherInfo = weatherInfoList[position]
-        holder.tvCity.text = weatherInfo.location?.name
-        holder.tvTemperature.text = weatherInfo.current?.tempC.toString()
-        holder.tvWind.text = weatherInfo.current?.windKph.toString()
-        holder.tvPressure.text = weatherInfo.current?.pressureMb.toString()
-        holder.tvHumidity.text = weatherInfo.current?.humidity.toString()
-        holder.tvDescriptionWeather.text = weatherInfo.current?.condition?.text
+
     }
 
-    override fun getItemCount() = weatherInfoList.size
+    override fun getItemCount(): Int {
+     return 0
+    }
 
     inner class WeatherInfoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvCity: TextView = view.findViewById(R.id.tvCity)
-        val tvTemperature: TextView = view.findViewById(R.id.tvTemperature)
-        val tvWind: TextView = view.findViewById(R.id.tvWind)
-        val tvPressure: TextView = view.findViewById(R.id.tvPressure)
-        val tvHumidity: TextView = view.findViewById(R.id.tvHumidity)
-        val ivCurrentWeather: ImageView = view.findViewById(R.id.ivCurrentWeather)
-        val tvDescriptionWeather: TextView = view.findViewById(R.id.tvDescriptionWeather)
     }
 }
