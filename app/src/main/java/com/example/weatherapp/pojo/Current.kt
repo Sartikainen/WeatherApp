@@ -29,6 +29,6 @@ data class Current (
     val humidity: Int? = null
 ) {
     fun getFullImageURL(): String {
-        return "$BASE_IMAGE_URL$condition.icon"
+        return "$BASE_IMAGE_URL${condition?.icon}"
     }
 }

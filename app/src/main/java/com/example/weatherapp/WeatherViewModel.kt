@@ -27,6 +27,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     val tempPerHour = db.weatherInfoDao().getTempFromHour()
     val forecastWeatherPerHour = db.weatherInfoDao().getForecastWeatherPerHour(date)
 
+
     private fun loadData() {
         val disposable = ApiFactory.apiService.getWeatherInfo(city = city, days = days)
             .delaySubscription(10, java.util.concurrent.TimeUnit.SECONDS)
