@@ -1,7 +1,6 @@
 package com.example.weatherapp.converters
 
 import androidx.room.TypeConverter
-import com.example.weatherapp.pojo.Forecastday
 import com.example.weatherapp.pojo.Hour
 import com.google.gson.Gson
 import org.json.JSONArray

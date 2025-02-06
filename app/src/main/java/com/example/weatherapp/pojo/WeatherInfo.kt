@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class WeatherInfo (
     @SerializedName("location")
     @Expose
-    val location: Location,
+    val location: Location? = null,
     @SerializedName("current")
     @Expose
     val current: Current? = null,

@@ -20,10 +20,10 @@ interface WeatherInfoDao {
     fun getCurrentWeather(): LiveData<Current>
 
     @Query("SELECT * FROM forecast_values")
-    fun getForecastWeatherPerHour(): LiveData<Forecastday>
+    fun getForecastWeatherPerHour(): LiveData<List<Forecastday>>
 
     @Query("SELECT * FROM hour_values WHERE time = :time")
-    fun getTempFromHour(time: String): LiveData<Hour>
+    fun getTempFromHour(time: String): LiveData<List<Hour>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation(location: Location)
@@ -32,8 +32,8 @@ interface WeatherInfoDao {
     fun insertCurrentWeather(current: Current)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertForecastdayWeather(forecastday: Forecastday)
+    fun insertForecastdayWeather(forecastday: List<Forecastday>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertHourWeather(hour: Hour)
+    fun insertHourWeather(hour: List<Hour>)
 }
