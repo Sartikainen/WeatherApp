@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
-class MainActivity : AppCompatActivity() {
+class WeatherActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WeatherViewModel
 
@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
-        viewModel.loadData()
         viewModel.forecastWeatherPerHour.observe(this, Observer {
             Log.d("TEST_OF_LOADING_DATA", "Success in activity: $it")
         })

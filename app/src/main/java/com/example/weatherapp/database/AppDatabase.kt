@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.weatherapp.pojo.Condition
 import com.example.weatherapp.pojo.Current
 import com.example.weatherapp.pojo.Forecastday
 import com.example.weatherapp.pojo.Hour
 import com.example.weatherapp.pojo.Location
 
-@Database(entities = [Location::class, Current::class, Forecastday::class, Hour::class], version = 3, exportSchema = false)
+@Database(entities = [Location::class, Current::class, Forecastday::class, Hour::class, Condition::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
 

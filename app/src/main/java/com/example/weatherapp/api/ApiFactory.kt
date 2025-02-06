@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiFactory {
 
     private const val BASE_URL = "https://api.weatherapi.com/v1/"
+    const val BASE_IMAGE_URL = "https:"
 
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())

@@ -1,16 +1,20 @@
 package com.example.weatherapp.pojo
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "condition_values")
 data class Condition(
     @SerializedName("text")
     @Expose
-    val text: String? = null,
+    var text: String? = null,
     @SerializedName("icon")
     @Expose
-    val icon: String? = null,
+    var icon: String? = null,
+    @PrimaryKey
     @SerializedName("code")
     @Expose
-    val code: Int? = null
+    var code: Int? = null
 )

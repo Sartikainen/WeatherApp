@@ -1,6 +1,7 @@
 package com.example.weatherapp.pojo
 
 import androidx.room.TypeConverters
+import com.example.weatherapp.converters.ConverterForecast
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
