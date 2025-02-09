@@ -1,15 +1,18 @@
-package com.example.weatherapp.database
+package com.example.weatherapp.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.weatherapp.data.database.model.WeatherInfoDbModel
 import com.example.weatherapp.pojo.Condition
 import com.example.weatherapp.pojo.Current
 import com.example.weatherapp.pojo.Forecastday
 import com.example.weatherapp.pojo.Hour
 import com.example.weatherapp.pojo.Location
+import io.reactivex.Completable
+import io.reactivex.Flowable
 
 @Dao
 interface WeatherInfoDao {
@@ -43,4 +46,10 @@ interface WeatherInfoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCondition(condition: Condition)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertWeatherInfo(weatherInfo: WeatherInfoDbModel): Completable
+
+    @Query("SELECT * FROM weather_info WHERE cityName = :cityName")
+    fun getWeatherInfo(cityName: String): Flowable<WeatherInfoDbModel>
 }

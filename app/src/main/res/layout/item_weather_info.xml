@@ -5,7 +5,7 @@
     android:id="@+id/item_weather_info"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".WeatherActivity">
+    tools:context=".presentation.WeatherActivity">
 
     <TextView
         android:id="@+id/tvCity"
