@@ -1,16 +1,15 @@
-package com.example.weatherapp
+package com.example.weatherapp.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.api.ApiFactory.BASE_IMAGE_URL
-import com.example.weatherapp.pojo.WeatherInfo
+import com.example.weatherapp.R
+import com.example.weatherapp.data.api.ApiFactory.BASE_IMAGE_URL
+import com.example.weatherapp.utils.EMPTY
 import com.squareup.picasso.Picasso
 
 class WeatherActivity : AppCompatActivity() {
@@ -40,27 +39,25 @@ class WeatherActivity : AppCompatActivity() {
         tvTime = findViewById(R.id.tvTime)
         tvDegrees = findViewById(R.id.tvDegrees)
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
-        viewModel.location().observe(this, Observer {
-            tvCity.text = it.name
-        })
-        viewModel.infoAboutIcon().observe(this, Observer {
-            tvDescriptionWeather.text = it.text
-            Picasso.get().load("https:${it.icon}").into(ivCurrentWeather)
-        })
-//        viewModel.currentWeather().observe(this, Observer {
-//            tvTemperature.text = it.tempC.toString()
-//            tvWind.text = it.windKph.toString()
-//            tvPressure.text = it.pressureMb.toString()
-//            tvHumidity.text = it.humidity.toString()
-//        })
-        viewModel.infoAboutIcon().observe(this, Observer {
-            tvDescriptionWeather.text = it.text
-            Picasso.get().load("$BASE_IMAGE_URL${it.icon}").into(ivCurrentWeather)
-        })
-        viewModel.tempPerHour().observe(this, Observer {
-            tvTime.text = it[0].time
-            tvDegrees.text = it[0].tempC.toString()
-            Log.d("TEST_OF_LOADING_DATA", "Activity: $it")
+        observeData()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun observeData() {
+        viewModel.weatherInfo.observe(this, Observer {
+            if (it != null) {
+                tvCity.text = it.location?.name ?: String.EMPTY
+                tvTemperature.text = "${it.current?.tempC ?: String.EMPTY}°C"
+                tvWind.text = "${it.current?.windKph ?: String.EMPTY} km/h"
+                tvPressure.text = "${it.current?.pressureMb ?: String.EMPTY} hPa"
+                tvHumidity.text = "${it.current?.humidity ?: String.EMPTY}%"
+                tvDescriptionWeather.text = it.current?.condition?.text ?: String.EMPTY
+                tvTime.text = it.forecast?.forecastday?.get(0)?.hour?.get(0)?.time ?: String.EMPTY
+                tvDegrees.text =
+                    "${it.forecast?.forecastday?.get(0)?.hour?.get(0)?.tempC ?: String.EMPTY}°C"
+                Picasso.get().load("$BASE_IMAGE_URL${it.current?.condition?.icon}")
+                    .into(ivCurrentWeather)
+            }
         })
     }
 }
