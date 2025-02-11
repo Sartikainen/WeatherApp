@@ -67,4 +67,6 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("androidx.room:room-rxjava2:2.6.1")
+
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

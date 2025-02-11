@@ -6,5 +6,5 @@ data class ForecastDayApiResponse (
     @SerializedName("date")
     val date: String,
     @SerializedName("hour")
-    val hour: List<HourApiRespone>? = null
+    val hour: List<HourApiResponse>? = null
 )

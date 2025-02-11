@@ -16,6 +16,8 @@ class WeatherActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WeatherViewModel
     private lateinit var tvCity: TextView
+    private lateinit var tvCountry: TextView
+    private lateinit var tvLocaltime: TextView
     private lateinit var tvTemperature: TextView
     private lateinit var tvWind: TextView
     private lateinit var tvPressure: TextView
@@ -25,19 +27,21 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var tvTime: TextView
     private lateinit var tvDegrees: TextView
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.item_weather_info)
+        setContentView(R.layout.activity_main)
         tvCity = findViewById(R.id.tvCity)
+        tvCountry = findViewById(R.id.tvCountry)
+        tvLocaltime = findViewById(R.id.tvLocaltime)
         tvTemperature = findViewById(R.id.tvTemperature)
         tvWind = findViewById(R.id.tvWind)
         tvPressure = findViewById(R.id.tvPressure)
         tvHumidity = findViewById(R.id.tvHumidity)
         tvDescriptionWeather = findViewById(R.id.tvDescriptionWeather)
         ivCurrentWeather = findViewById(R.id.ivCurrentWeather)
-        tvTime = findViewById(R.id.tvTime)
-        tvDegrees = findViewById(R.id.tvDegrees)
+//        tvTime = findViewById(R.id.tvTime)
+//        tvDegrees = findViewById(R.id.tvDegrees)
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
         observeData()
     }
@@ -46,15 +50,17 @@ class WeatherActivity : AppCompatActivity() {
     private fun observeData() {
         viewModel.weatherInfo.observe(this, Observer {
             if (it != null) {
-                tvCity.text = it.location?.name ?: String.EMPTY
+                tvCity.text = "${it.location?.name ?: String.EMPTY}, "
+                tvCountry.text = "${it.location?.country ?: String.EMPTY}, "
+                tvLocaltime.text = it.location?.localtime ?: String.EMPTY
                 tvTemperature.text = "${it.current?.tempC ?: String.EMPTY}°C"
                 tvWind.text = "${it.current?.windKph ?: String.EMPTY} km/h"
                 tvPressure.text = "${it.current?.pressureMb ?: String.EMPTY} hPa"
                 tvHumidity.text = "${it.current?.humidity ?: String.EMPTY}%"
                 tvDescriptionWeather.text = it.current?.condition?.text ?: String.EMPTY
-                tvTime.text = it.forecast?.forecastday?.get(0)?.hour?.get(0)?.time ?: String.EMPTY
-                tvDegrees.text =
-                    "${it.forecast?.forecastday?.get(0)?.hour?.get(0)?.tempC ?: String.EMPTY}°C"
+//                tvTime.text = it.forecast?.forecastday?.get(0)?.hour?.get(0)?.time ?: String.EMPTY
+//                tvDegrees.text =
+//                    "${it.forecast?.forecastday?.get(0)?.hour?.get(0)?.tempC ?: String.EMPTY}°C"
                 Picasso.get().load("$BASE_IMAGE_URL${it.current?.condition?.icon}")
                     .into(ivCurrentWeather)
             }

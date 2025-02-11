@@ -11,7 +11,7 @@ import com.example.weatherapp.pojo.Forecastday
 import com.example.weatherapp.pojo.Hour
 import com.example.weatherapp.pojo.Location
 
-@Database(entities = [Location::class, Current::class, Forecastday::class, Hour::class, Condition::class, WeatherInfoDbModel::class], version = 6, exportSchema = false)
+@Database(entities = [Location::class, Current::class, Forecastday::class, Hour::class, Condition::class, WeatherInfoDbModel::class], version = 7, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
 

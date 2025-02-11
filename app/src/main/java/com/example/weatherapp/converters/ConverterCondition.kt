@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import org.json.JSONObject
 
 class ConverterCondition {
+
     @TypeConverter
     fun conditionToString(condition: Condition): String {
         var jsonObject = JSONObject()
