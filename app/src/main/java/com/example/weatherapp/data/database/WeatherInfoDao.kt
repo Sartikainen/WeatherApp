@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.weatherapp.data.database.model.WeatherInfoDbModel
 import com.example.weatherapp.pojo.Condition
+import com.example.weatherapp.pojo.ConditionHour
 import com.example.weatherapp.pojo.Current
 import com.example.weatherapp.pojo.Forecastday
 import com.example.weatherapp.pojo.Hour
@@ -32,6 +33,9 @@ interface WeatherInfoDao {
     @Query("SELECT * FROM condition_values")
     fun getInfoAboutIcon(): LiveData<Condition>
 
+    @Query("SELECT * FROM condition_hour_values")
+    fun getInfoAboutHourIcon(): LiveData<ConditionHour>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation(location: Location)
 
@@ -46,6 +50,9 @@ interface WeatherInfoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCondition(condition: Condition)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertConditionHour(condition: ConditionHour)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWeatherInfo(weatherInfo: WeatherInfoDbModel): Completable

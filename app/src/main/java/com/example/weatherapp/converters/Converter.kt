@@ -19,16 +19,16 @@ class Converter {
         return jsonArray.toString()
     }
 
-        @TypeConverter
-        fun stringToListHours(hoursAsString: String): List<Hour> {
-            var gson = Gson()
-            var objects: ArrayList<JSONObject> =
-                gson.fromJson(hoursAsString, Array<JSONObject>::class.java)
-                    .toList() as ArrayList<JSONObject>
-            var hours: ArrayList<Hour> = ArrayList()
-            for (o in objects) {
-                hours.add(gson.fromJson(o.toString(), Hour::class.java))
-            }
-            return hours
+    @TypeConverter
+    fun stringToListHours(hoursAsString: String): List<Hour> {
+        var gson = Gson()
+        var objects: ArrayList<JSONObject> =
+            gson.fromJson(hoursAsString, Array<JSONObject>::class.java)
+                .toList() as ArrayList<JSONObject>
+        var hours: ArrayList<Hour> = ArrayList()
+        for (o in objects) {
+            hours.add(gson.fromJson(o.toString(), Hour::class.java))
         }
+        return hours
     }
+}

@@ -9,13 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
+import com.example.weatherapp.data.api.ApiFactory.BASE_IMAGE_URL
 import com.example.weatherapp.pojo.Hour
-import com.example.weatherapp.pojo.WeatherInfo
 import com.squareup.picasso.Picasso
 
-class WeatherInfoAdapter(private val context: Context): RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoViewHolder>() {
+class WeatherInfoAdapter(private val context: Context) :
+    RecyclerView.Adapter<WeatherInfoAdapter.WeatherInfoViewHolder>() {
 
-    var weatherInfoListOfDays: List<WeatherInfo> = arrayListOf()
+    var weatherInfoListOfDays: List<Hour> = arrayListOf()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -26,7 +27,8 @@ class WeatherInfoAdapter(private val context: Context): RecyclerView.Adapter<Wea
         parent: ViewGroup,
         viewType: Int,
     ): WeatherInfoViewHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_weather_info, parent, false)
+        var view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_weather_info, parent, false)
         return WeatherInfoViewHolder(view)
     }
 
@@ -34,13 +36,21 @@ class WeatherInfoAdapter(private val context: Context): RecyclerView.Adapter<Wea
         holder: WeatherInfoViewHolder,
         position: Int,
     ) {
+        val hour = weatherInfoListOfDays[position]
+        holder.tvTime.text = hour.time
+        holder.tvDegrees.text = hour.tempC.toString()
+        Picasso.get().load("${BASE_IMAGE_URL}${hour.condition?.icon}")
+            .into(holder.ivForecastWeather)
 
     }
 
     override fun getItemCount(): Int {
-     return 0
+        return weatherInfoListOfDays.size
     }
 
     inner class WeatherInfoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var tvTime: TextView = view.findViewById(R.id.tvTime)
+        var tvDegrees: TextView = view.findViewById(R.id.tvDegrees)
+        var ivForecastWeather: ImageView = view.findViewById(R.id.ivForecastWeather)
     }
 }

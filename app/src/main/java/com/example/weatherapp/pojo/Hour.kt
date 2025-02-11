@@ -3,12 +3,12 @@ package com.example.weatherapp.pojo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.weatherapp.converters.ConverterCondition
+import com.example.weatherapp.converters.ConverterConditionHour
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "hour_values")
-@TypeConverters(value = [ConverterCondition::class])
+@TypeConverters(value = [ConverterConditionHour::class])
 data class Hour (
     @PrimaryKey
     @SerializedName("time")
@@ -16,5 +16,8 @@ data class Hour (
     val time: String,
     @SerializedName("temp_c")
     @Expose
-    val tempC: Double? = null
+    val tempC: Double? = null,
+    @SerializedName("condition")
+    @Expose
+    val condition: ConditionHour? = null
 )

@@ -10,7 +10,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class WeatherInfoRepositoryImpl(
-     context: Context
+    context: Context,
 ) : WeatherInfoRepository {
 
     private val weatherApi = ApiFactory.apiService
