@@ -19,9 +19,8 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     private val getWeatherInfoUseCase = GetWeatherInfoUseCase(weatherInfoRepository)
     private val fetchWeatherInfoUseCase = FetchWeatherInfoUseCase(weatherInfoRepository)
 
-    private var city: String = "Tbilisi"
+    private var city: String = "Тбилиси"
     private var days: Int = 3
-    private var date : String = "2025-02-06"
 
     private val _weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData(null)
     val weatherInfo: LiveData<WeatherInfo>
@@ -31,7 +30,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         fetchWeatherInfo()
         getWeatherInfo()
     }
-
 
     private fun fetchWeatherInfo() {
         val disposable = fetchWeatherInfoUseCase.execute(city, days)
@@ -51,7 +49,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
         compositeDisposable.add(disposable)
     }
-
 
     override fun onCleared() {
         super.onCleared()

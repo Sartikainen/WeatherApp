@@ -24,17 +24,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Country"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@id/tvCity"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/tvLocaltime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +31,7 @@
             android:text="Localtime"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@id/tvCountry"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -63,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Wind"
+            android:text="Скорость ветра"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tvPressureLabel"
@@ -88,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Pressure"
+            android:text="Давление"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tvHumidityLabel"
@@ -113,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Humidity"
+            android:text="Влажность"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -184,6 +173,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="30"
                 android:text="На сегодня"
+                android:checked="true"
                 android:textSize="16sp" />
 
             <RadioButton

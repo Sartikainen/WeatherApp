@@ -10,8 +10,8 @@ interface ApiService {
     @GET("forecast.json")
     fun getWeatherInfo(
         @Query(QUERY_PARAM_API_KEY) apiKey: String = API_KEY,
-        @Query(QUERY_PARAM_CITY) city: String = "Tbilisi",
-        @Query(QUERY_PARAM_DAYS) days: Int = 1
+        @Query(QUERY_PARAM_CITY) city: String,
+        @Query(QUERY_PARAM_DAYS) days: Int
     ): Single<WeatherInfoApiResponse>
 
     companion object {

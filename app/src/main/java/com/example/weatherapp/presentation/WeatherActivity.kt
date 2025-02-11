@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,8 +21,10 @@ import com.squareup.picasso.Picasso
 class WeatherActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WeatherViewModel
+    private lateinit var rvWeatherHourList: RecyclerView
+    private lateinit var adapter: WeatherInfoAdapter
+
     private lateinit var tvCity: TextView
-    private lateinit var tvCountry: TextView
     private lateinit var tvLocaltime: TextView
     private lateinit var tvTemperature: TextView
     private lateinit var tvWind: TextView
@@ -29,16 +33,15 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var tvDescriptionWeather: TextView
     private lateinit var ivCurrentWeather: ImageView
 
-    private lateinit var rvWeatherHourList: RecyclerView
-    private lateinit var adapter: WeatherInfoAdapter
+    private lateinit var radioGroup: RadioGroup
 
     @SuppressLint("SetTextI18n", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         rvWeatherHourList = findViewById(R.id.rvWeatherHourInfo)
+        radioGroup = findViewById(R.id.radioGroup)
         tvCity = findViewById(R.id.tvCity)
-        tvCountry = findViewById(R.id.tvCountry)
         tvLocaltime = findViewById(R.id.tvLocaltime)
         tvTemperature = findViewById(R.id.tvTemperature)
         tvWind = findViewById(R.id.tvWind)
@@ -57,8 +60,10 @@ class WeatherActivity : AppCompatActivity() {
     private fun observeData() {
         viewModel.weatherInfo.observe(this, Observer {
             if (it != null) {
-                tvCity.text = "${it.location?.name ?: String.EMPTY}, "
-                tvCountry.text = "${it.location?.country ?: String.EMPTY}, "
+                if(adapter.weatherInfoListOfDays.isEmpty()) {
+                    adapter.weatherInfoListOfDays = it.forecast?.forecastday?.get(0)?.hour ?: ArrayList<Hour>()
+                }
+                tvCity.text = it.location?.name ?: String.EMPTY
                 tvLocaltime.text = it.location?.localtime ?: String.EMPTY
                 tvTemperature.text = "${it.current?.tempC ?: String.EMPTY}°C"
                 tvWind.text = "${it.current?.windKph ?: String.EMPTY} km/h"
@@ -67,8 +72,24 @@ class WeatherActivity : AppCompatActivity() {
                 tvDescriptionWeather.text = it.current?.condition?.text ?: String.EMPTY
                 Picasso.get().load("$BASE_IMAGE_URL${it.current?.condition?.icon}")
                     .into(ivCurrentWeather)
-                adapter.weatherInfoListOfDays = it.forecast?.forecastday?.get(0)?.hour ?: ArrayList<Hour>()
-                adapter.notifyDataSetChanged()
+                radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                    when (checkedId) {
+                        R.id.rbToday -> adapter.weatherInfoListOfDays =
+                            it.forecast?.forecastday?.get(0)?.hour ?: ArrayList<Hour>()
+
+                        R.id.rbTomorrow -> adapter.weatherInfoListOfDays =
+                            it.forecast?.forecastday?.get(1)?.hour ?: ArrayList<Hour>()
+
+                        R.id.rbThreeDays -> {
+                            var temp: MutableList<Hour> = arrayListOf()
+                            for (i in 0..2) {
+                                temp.addAll(it.forecast?.forecastday?.get(i)?.hour ?: ArrayList<Hour>())
+                            }
+                            adapter.weatherInfoListOfDays = temp
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                }
             }
         })
     }
