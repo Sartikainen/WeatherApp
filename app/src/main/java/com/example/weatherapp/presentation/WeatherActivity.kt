@@ -1,8 +1,10 @@
 package com.example.weatherapp.presentation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -32,6 +34,8 @@ class WeatherActivity : AppCompatActivity() {
     private lateinit var tvHumidity: TextView
     private lateinit var tvDescriptionWeather: TextView
     private lateinit var ivCurrentWeather: ImageView
+    private lateinit var etCity: EditText
+    private lateinit var tvSendCity: TextView
 
     private lateinit var radioGroup: RadioGroup
 
@@ -49,6 +53,8 @@ class WeatherActivity : AppCompatActivity() {
         tvHumidity = findViewById(R.id.tvHumidity)
         tvDescriptionWeather = findViewById(R.id.tvDescriptionWeather)
         ivCurrentWeather = findViewById(R.id.ivCurrentWeather)
+        etCity = findViewById(R.id.etCity)
+        tvSendCity = findViewById(R.id.tvSendCity)
         adapter = WeatherInfoAdapter(this)
         adapter.weatherInfoListOfDays = ArrayList<Hour>()
         rvWeatherHourList.adapter = adapter
