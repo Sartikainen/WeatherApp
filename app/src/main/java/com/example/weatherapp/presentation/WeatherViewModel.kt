@@ -1,7 +1,6 @@
 package com.example.weatherapp.presentation
 
 import android.app.Application
-import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +11,7 @@ import com.example.weatherapp.pojo.WeatherInfo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,21 +27,29 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     val weatherInfo: LiveData<WeatherInfo>
         get() = _weatherInfo
 
+    fun setCity(newCity: String) {
+        if (city != newCity) {
+            city = newCity
+        }
+        fetchWeatherInfo()
+    }
+
     init {
         fetchWeatherInfo()
-        getWeatherInfo()
     }
 
     private fun fetchWeatherInfo() {
-        val disposable = fetchWeatherInfoUseCase.execute(city, days)
-            .subscribeOn(Schedulers.io())
-            .subscribe()
+            val disposable = fetchWeatherInfoUseCase.execute(city.toString(), days)
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+            getWeatherInfo()
 
-        compositeDisposable.add(disposable)
+            compositeDisposable.add(disposable)
     }
 
     private fun getWeatherInfo() {
-        val disposable = getWeatherInfoUseCase.execute(city)
+        val disposable = getWeatherInfoUseCase.execute(city.toString())
+            .delaySubscription(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

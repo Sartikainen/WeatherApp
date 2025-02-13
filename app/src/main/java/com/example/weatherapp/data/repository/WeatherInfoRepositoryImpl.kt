@@ -1,6 +1,7 @@
 package com.example.weatherapp.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.weatherapp.data.api.ApiFactory
 import com.example.weatherapp.data.database.AppDatabase
 import com.example.weatherapp.mapper.toDbModel
@@ -24,15 +25,16 @@ class WeatherInfoRepositoryImpl(
     }
 
     override fun fetchWeatherInfo(city: String, days: Int): Completable {
-        return weatherApi.getWeatherInfo(city = city, days = days)
-            .delaySubscription(10, java.util.concurrent.TimeUnit.SECONDS)
-            .repeat()
-            .retry()
-            .map {
-                it.toDbModel()
-            }
-            .flatMapCompletable {
-                db.weatherInfoDao().insertWeatherInfo(it)
-            }
+        return try {
+            weatherApi.getWeatherInfo(city = city, days = days)
+                .map {
+                    it.toDbModel()
+                }
+                .flatMapCompletable {
+                    db.weatherInfoDao().insertWeatherInfo(it)
+                }
+        } catch (e: Exception) {
+            Log.e("AppError", "Unexpected error: ${e.message}", e)
+        } as Completable
     }
 }

@@ -2,6 +2,7 @@ package com.example.weatherapp.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -9,7 +10,9 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -60,9 +63,12 @@ class WeatherActivity : AppCompatActivity() {
         rvWeatherHourList.adapter = adapter
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
         observeData()
+        tvSendCity.setOnClickListener {
+                setCity()
+        }
     }
 
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged", "ResourceAsColor")
     private fun observeData() {
         viewModel.weatherInfo.observe(this, Observer {
             if (it != null) {
@@ -71,10 +77,43 @@ class WeatherActivity : AppCompatActivity() {
                 }
                 tvCity.text = it.location?.name ?: String.EMPTY
                 tvLocaltime.text = it.location?.localtime ?: String.EMPTY
+
                 tvTemperature.text = "${it.current?.tempC ?: String.EMPTY}°C"
+                it.current?.tempC?.let { temp ->
+                    if (temp <= -30 || temp >= 35) {
+                        tvTemperature.setTextColor(Color.parseColor("#FF5733"))
+                    } else {
+                        tvTemperature.setTextColor(R.color.black)
+                    }
+                }
+
                 tvWind.text = "${it.current?.windKph ?: String.EMPTY} km/h"
+                it.current?.windKph?.let { wind ->
+                    if (wind > 50) {
+                        tvWind.setTextColor(Color.parseColor("#FF5733"))
+                    } else {
+                        tvWind.setTextColor(R.color.black)
+                    }
+                }
+
                 tvPressure.text = "${it.current?.pressureMb ?: String.EMPTY} hPa"
+                it.current?.pressureMb?.let { pressure ->
+                    if (pressure > 1040) {
+                        tvPressure.setTextColor(Color.parseColor("#FF5733"))
+                    } else {
+                        tvPressure.setTextColor(R.color.black)
+                    }
+                }
+
                 tvHumidity.text = "${it.current?.humidity ?: String.EMPTY}%"
+                it.current?.humidity?.let { humidity ->
+                    if (humidity > 85) {
+                        tvHumidity.setTextColor(Color.parseColor("#FF5733"))
+                    } else {
+                        tvHumidity.setTextColor(R.color.black)
+                    }
+                }
+
                 tvDescriptionWeather.text = it.current?.condition?.text ?: String.EMPTY
                 Picasso.get().load("$BASE_IMAGE_URL${it.current?.condition?.icon}")
                     .into(ivCurrentWeather)
@@ -99,4 +138,11 @@ class WeatherActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun setCity() {
+        if (etCity.text.isNotEmpty()) {
+            viewModel.setCity(etCity.text.toString())
+        }
+    }
+
 }
