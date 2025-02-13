@@ -20,7 +20,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     private val getWeatherInfoUseCase = GetWeatherInfoUseCase(weatherInfoRepository)
     private val fetchWeatherInfoUseCase = FetchWeatherInfoUseCase(weatherInfoRepository)
 
-    private var city: String = "Тбилиси"
+    private var city: String = "Северск"
     private var days: Int = 3
 
     private val _weatherInfo: MutableLiveData<WeatherInfo> = MutableLiveData(null)
